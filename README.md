@@ -30,4 +30,4 @@ Extract names from functions.
 
 ## Thanks
 
-Heavily inspired by [sindresorhus/slashh](https://github.com/sindresorhus/slash).
+Heavily inspired by [3rd-Eden/fn.name](https://github.com/3rd-Eden/fn.name).

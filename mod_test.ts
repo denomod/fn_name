@@ -1,61 +1,61 @@
-import { test } from "https://deno.land/std/testing/mod.ts";
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 
 import name from "./mod.ts";
 
-test({
+Deno.test({
   name: "it is exported as a function",
   fn(): void {
     assertEquals(typeof name, "function");
-  }
+  },
 });
 
-test({
+Deno.test({
   name: "can extract the name from a function declaration",
   fn(): void {
     function foobar() {}
     assertEquals(name(foobar), "foobar");
-  }
+  },
 });
 
-test({
+Deno.test({
   name: "can extract the name from a function expression",
   fn(): void {
     const a = function bar() {};
     assertEquals(name(a), "bar");
-  }
+  },
 });
 
-test({
+Deno.test({
   name: "can be overriden using displayName",
   fn(): void {
     const a = function bar() {};
     (a as any).displayName = "bro";
     assertEquals(name(a), "bro");
-  }
+  },
 });
 
-test({
+Deno.test({
   name: "works with constructed instances",
   fn(): void {
+    interface Bar {}
     function Bar() {}
-    const foo = new Bar();
-    assertEquals(name(foo), "Bar");
-  }
+    const foo: Bar = new (<any> Bar)();
+    assertEquals(name(foo as Function), "Bar");
+  },
 });
 
-test({
+Deno.test({
   name: "works with anonymous",
   fn(): void {
-    assertEquals(name(function() {}), "anonymous");
-  }
+    assertEquals(name(function () {}), "anonymous");
+  },
 });
 
-test({
+Deno.test({
   name: "returns the className if we were not given a function",
   fn(): void {
     assertEquals(name(("string" as unknown) as StringConstructor), "String");
-  }
+  },
 });
 
 //
@@ -70,12 +70,12 @@ try {
 }
 
 if (asyncfn) {
-  test({
+  Deno.test({
     name: "detects the name of async functions",
     fn(): void {
       const fn = new Function("return async function hello() {}")();
       assertEquals(name(fn), "hello");
-    }
+    },
   });
 }
 
@@ -91,11 +91,11 @@ try {
 }
 
 if (generators) {
-  test({
+  Deno.test({
     name: "detecs the name of a generator",
     fn(): void {
       const fn = new Function("return function* hello() {}")();
       assertEquals(name(fn), "hello");
-    }
+    },
   });
 }
